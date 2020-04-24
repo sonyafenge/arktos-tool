@@ -4,7 +4,9 @@ export PODSTOTAL=400 PODSPERDP=200 PODSIMAGE="gcr.io/google_samples/gb-frontend:
 ```
 
 multipods-prealkaid.sh.   #####for prealkaid
-multipods.sh                       #####for arktos with default talents
+
+
+multipods.sh              #####for arktos with default talents
 
 
 check 
