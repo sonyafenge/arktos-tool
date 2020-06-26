@@ -42,3 +42,4 @@ for name in $( ls | grep json);do
   esac
 done
 echo "total ${filenum} json files, ${convertednum} converted to csv!"
+echo "Please check csv files under ./csv/"
