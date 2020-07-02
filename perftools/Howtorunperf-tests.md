@@ -14,7 +14,7 @@ sonyafenge@sonyadev:~/go/src/k8s.io/joeshao/arktos$ export MASTER_ROOT_DISK_SIZE
 sonyafenge@sonyadev:~/go/src/k8s.io/joeshao/arktos$ ./cluster/kube-up.sh 
 sonyafenge@sonyadev:~/go/src/k8s.io/joeshao/arktos$ ./test/kubemark/start-kubemark.sh
 ```
-2. run the line below to change hollow-node “replicas: 500”  if you want to run 500 nodes cluster. Default value is 10.
+2. run the line below to change hollow-node “replicas: 500”  if you want to run 500 nodes cluster. Default value is 10 but minimal is 100.
 ```
 sonyafenge@sonyadev:~/go/src/k8s.io/joeshao/arktos$ kubectl edit replicationcontroller hollow-node -n kubemark	
 ```
