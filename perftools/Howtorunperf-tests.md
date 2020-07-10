@@ -28,7 +28,8 @@ sonyafenge@sonyadev:~/go/src/k8s.io/joeshao/arktos$ kubectl --kubeconfig=/home/s
 4. start perf-tests
 ```
 sonyafenge@sonyadev:~/go/src/k8s.io/joeshao/arktos$ cd ../../perf-tests/clusterloader2/
-sonyafenge@sonyadev:~/go/src/k8s.io/perf-tests/clusterloader2$ PROMETHEUS_SCRAPE_ETCD=true ENABLE_PROMETHEUS_SERVER=true nohup ./run-e2e.sh --nodes=500 --provider=kubemark --kubeconfig=/home/sonyafenge/go/src/k8s.io/joeshao/arktos/test/kubemark/resources/kubeconfig.kubemark --report-dir=/home/sonyafenge/logs/perf-test/gce-500/arktos/0626-1apiserver --testconfig=testing/load/config.yaml --testconfig=testing/density/config.yaml --testoverrides=./testing/experiments/enable_prometheus_api_responsiveness.yaml --testoverrides=./testing/experiments/use_simple_latency_query.yaml	
+sonyafenge@sonyadev:~/go/src/k8s.io/perf-tests/clusterloader2$ export PROMETHEUS_SCRAPE_ETCD=true ENABLE_PROMETHEUS_SERVER=true
+sonyafenge@sonyadev:~/go/src/k8s.io/perf-tests/clusterloader2$ nohup ./run-e2e.sh --nodes=500 --provider=kubemark --kubeconfig=/home/sonyafenge/go/src/k8s.io/joeshao/arktos/test/kubemark/resources/kubeconfig.kubemark --report-dir=/home/sonyafenge/logs/perf-test/gce-500/arktos/0626-1apiserver --testconfig=testing/load/config.yaml --testconfig=testing/density/config.yaml --testoverrides=./testing/experiments/enable_prometheus_api_responsiveness.yaml --testoverrides=./testing/experiments/use_simple_latency_query.yaml
 ```
 
 
