@@ -10,7 +10,7 @@ make quick-release
 
 1. kube-up to start admin cluster, start-kubemark to start kubemark cluster
 ```
-sonyafenge@sonyadev:~/go/src/k8s.io/joeshao/arktos$ export MASTER_ROOT_DISK_SIZE=100GB MASTER_DISK_SIZE=200GB KUBE_GCE_ZONE=us-west2-b MASTER_SIZE=n1-highmem-32 NODE_SIZE=n1-highmem-8 NUM_NODES=7 NODE_DISK_SIZE=200GB KUBE_GCE_NETWORK=kubemark-500 GOPATH=$HOME/go KUBE_GCE_ENABLE_IP_ALIASES=true KUBE_GCE_PRIVATE_CLUSTER=true CREATE_CUSTOM_NETWORK=true KUBE_GCE_INSTANCE_PREFIX=kubemark-500 APISERVERS_EXTRA_NUM=0 PROMETHEUS_SCRAPE_ETCD=true ENABLE_PROMETHEUS_SERVER=true
+sonyafenge@sonyadev:~/go/src/k8s.io/joeshao/arktos$ export MASTER_ROOT_DISK_SIZE=100GB MASTER_DISK_SIZE=200GB KUBE_GCE_ZONE=us-west2-b MASTER_SIZE=n1-highmem-32 NODE_SIZE=n1-highmem-8 NUM_NODES=8 NODE_DISK_SIZE=200GB KUBE_GCE_NETWORK=kubemark-500 GOPATH=$HOME/go KUBE_GCE_ENABLE_IP_ALIASES=true KUBE_GCE_PRIVATE_CLUSTER=true CREATE_CUSTOM_NETWORK=true KUBE_GCE_INSTANCE_PREFIX=kubemark-500 APISERVERS_EXTRA_NUM=0 PROMETHEUS_SCRAPE_ETCD=true ENABLE_PROMETHEUS_SERVER=true
 sonyafenge@sonyadev:~/go/src/k8s.io/joeshao/arktos$ ./cluster/kube-up.sh 
 sonyafenge@sonyadev:~/go/src/k8s.io/joeshao/arktos$ ./test/kubemark/start-kubemark.sh
 ```
