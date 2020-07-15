@@ -1,6 +1,10 @@
 Process under GCP project. Please remember perf-tests running on kubemark master, so all logs should be checked under /var/log/ on kubemark-master
 
-pre-rerequisites:
+Pre-rerequisites: GCP config
+1. run "gcloud version" to ensure your Google Cloud SDK is updated (suggested Google Cloud SDK 298.0.0 and up), Please refer to https://cloud.google.com/sdk/docs/downloads-apt-get or https://cloud.google.com/sdk/docs/downloads-versioned-archives to upgrade your google cloud SDK
+2. ensure your docker login and access has been configured, if not, please run "gcloud auth configure-docker" to config
+
+Pre-rerequisites: build prepare
 ```
 git clone [arktos git link]
 cd arktos
