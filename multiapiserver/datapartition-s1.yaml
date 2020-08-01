@@ -3,7 +3,7 @@ kind: DataPartitionConfig
 serviceGroupId: "1"
 rangeStart: "m"
 isRangeStartValid: true 
-rangeEnd: "z"
+rangeEnd: "Z"
 isRangeEndValid: false
 metadata:
         name: "partition-1"

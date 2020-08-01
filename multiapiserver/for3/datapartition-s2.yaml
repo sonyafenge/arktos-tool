@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: DataPartitionConfig
+serviceGroupId: "2"
+rangeStart: "p"
+isRangeStartValid: false
+rangeEnd: "Z"
+isRangeEndValid: true
+metadata:
+  name: "partition-2"
