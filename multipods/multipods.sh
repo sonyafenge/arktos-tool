@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 echo "start deploying large scale pods... "
 export DPPATH=${DPPATH:-}
-export TENANTNAME=${TENANTNAME:-}
+export TENANTNAME=${TENANTNAME:-"system"}
 export PODSTOTAL=${PODSTOTAL:-"10"}
 export PODSPERDP=${PODSPERDP:-"5"}
 export PODSIMAGE=${PODSIMAG:-"kahootali/counter:1.0"}
@@ -31,21 +31,21 @@ function create-dpyaml {
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "pods-${name}"
-  namespace: "ns-${name}"
+  name: "${name}-pods"
+  namespace: "${name}-ns"
   tenant: ${tenantname}
 spec:
   replicas: ${podsnumber}
   selector:
     matchLabels:
-      app: "pods-${name}"
+      app: "${name}-pods"
   template:
     metadata:
       labels:
-        app: "pods-${name}"
+        app: "${name}-pods"
     spec:
       containers:
-      - name: "pods-${name}"
+      - name: "${name}-pods"
         image: ${image}
 EOF
 }
@@ -73,6 +73,7 @@ metadata:
   tenant: "${tenantname}"
 EOF
 }
+
 
 ###############
 #   main function
@@ -106,10 +107,10 @@ fi
 
 while (("${podspending}" > 0)); do
         echo "pods pending num:${podspending}"
-    randomname=$(uuidgen -r)
+    randomname=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w ${1:-32} | head -n 1)
 #       echo "randomname: ${randomname}"
-        dpname="pods-${randomname}"
-        nsname="ns-${randomname}"
+        dpname="${randomname}-pods"
+        nsname="${randomname}-ns"
         podsnum=${PODSPERDP}
         if (("${podspending}" <= "${podsnum}")) ; then
                 podsnum=${podspending}
