@@ -9,5 +9,7 @@ multipods-prealkaid.sh.   #####for prealkaid
 multipods.sh              #####for arktos with default talents
 
 
-check 
+check pods status:
+```
 kubectl get pods --all-namespaces --field-selector=status.phase=Running --kubeconfig=~/go/src/k8s.io/arktos/test/kubemark/resources/kubeconfig.kubemark | wc -l
+```
