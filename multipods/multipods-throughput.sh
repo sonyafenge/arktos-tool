@@ -31,13 +31,13 @@ function create-dpyaml {
         local image=$4
 	local tenantname=$5
         local filename="${nsname}-${name}.yaml"
-        echo "${filename}, ${name}, ${nsname}, ${image}, ${podsnumber}, ${tenantname}"
+        echo "${podsnumber}, ${name}, ${nsname}, ${image}, ${tenantname},${filename}"
     cat <<EOF > ${filename}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: "${name}-pods"
-  namespace: "nsname"
+  namespace: "${nsname}"
   tenant: ${tenantname}
 spec:
   replicas: ${podsnumber}
@@ -112,6 +112,7 @@ if [[ ! -z "${TENANTNAME}" ]]; then
         
 fi
 
+echo "total ns: ${namespacenum}"
 for (( nsnum=0; nsnum<${namespacenum:-1}; nsnum++ )); do
         randomname=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w ${1:-32} | head -n 1)
         nsname="${randomname}-ns"
@@ -119,8 +120,8 @@ for (( nsnum=0; nsnum<${namespacenum:-1}; nsnum++ )); do
         echo $(kubectl apply -f ${nsname}.yaml ${kubeconfigoption})
         for (( dpnum=0; dpnum<${DPPERNAMESPACE:-1}; dpnum++ )); do
                 dpname="dp-${dpnum}"
-                create-dpyaml ${podsnum} ${dpname} ${nsname} ${PODSIMAGE} ${TENANTNAME}
-                echo $(kubectl apply -f ${randomname}.yaml ${kubeconfigoption})
+                create-dpyaml ${PODSPERDP} ${dpname} ${nsname} ${PODSIMAGE} ${TENANTNAME}
+                echo $(kubectl apply -f ${nsname}-${dpname}.yaml ${kubeconfigoption})
         done
 done
 
