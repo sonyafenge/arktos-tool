@@ -7,7 +7,7 @@ export TENANTNAME=${TENANTNAME:-"system"}
 #export PODSTOTAL=${PODSTOTAL:-"10"}
 export PODSPERDP=${PODSPERDP:-"10"}
 export DPPERNAMESPACE=${DPPERNAMESPACE:-"15"}
-export NSPERNODE=${NSPERNODE:-"15"}
+export NODEPERNS=${NODEPERNS:-"5"}
 export PODSIMAGE=${PODSIMAG:-"kahootali/counter:1.0"}
 export CLEANUP=${CLEANUP:-"false"}
 export KUBECONFILE=${KUBECONFILE:-}
@@ -94,8 +94,8 @@ if [[ ${CLEANUP} == "true" ]]; then
 fi
 
 podsdeployed=0
-podspending=$((ENODENUM * PODSPERNODE))
-namespacenum=$((NODENUM / NSPERNODE))
+podspending=$((NODENUM * PODSPERNODE))
+namespacenum=$((NODENUM / NODEPERNS))
 kubeconfigoption=${kubeconfigoption:-}
 if [[ ! -z "${KUBECONFILE}" ]]; then
     kubeconfigoption=" --kubeconfig=${KUBECONFILE}"
@@ -113,6 +113,7 @@ if [[ ! -z "${TENANTNAME}" ]]; then
 fi
 
 echo "total ns: ${namespacenum}"
+date
 for (( nsnum=0; nsnum<${namespacenum:-1}; nsnum++ )); do
         randomname=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w ${1:-32} | head -n 1)
         nsname="${randomname}-ns"
@@ -124,4 +125,4 @@ for (( nsnum=0; nsnum<${namespacenum:-1}; nsnum++ )); do
                 echo $(kubectl apply -f ${nsname}-${dpname}.yaml ${kubeconfigoption})
         done
 done
-
+date
