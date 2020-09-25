@@ -12,7 +12,7 @@ global:
 scrape_configs:
   - job_name: prometheus-metric
     static_configs:
-    - targets: ['[Master internalIP]:2379','127.0.0.1:2379',’[Master internalIP]:443','127.0.0.1:443']
+    - targets: ['[Master internalIP]:2379','127.0.0.1:2379','[Master internalIP]:443','127.0.0.1:443']
 3. run prometheus
 ./prometheus --config.file="/tmp/prometheus-metric.yaml" --web.listen-address=":9090" --web.enable-admin-api
 
