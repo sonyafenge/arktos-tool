@@ -16,5 +16,7 @@ scrape_configs:
 3. run prometheus
 ./prometheus --config.file="/tmp/prometheus-metric.yaml" --web.listen-address=":9090" --web.enable-admin-api
 
-to access the metrics, make sure port 9090 is enabled on the host, and then head to browser and do
+
+PLease also ensure apiserver insecure port 8080 is enabled before start cluster: https://github.com/sonyafenge/arktos/commit/530ac5ff89f3e158177f4b7d78bc22d02c095714 
+To access the metrics, make sure port 9090 is enabled on the host, and then head to browser and do
 http://[host ip]:9090/
