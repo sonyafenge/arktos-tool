@@ -22,7 +22,6 @@ To access the metrics, make sure port 9090 is enabled on the host, and then head
 http://[host ip]:9090/
 
 
-
 You can also save snapshot for Prometheus data: 
 ```
 $ curl -XPOST http://localhost:9090/api/v1/admin/tsdb/snapshot
