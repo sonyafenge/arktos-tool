@@ -1,11 +1,14 @@
 This can be done from the master node. come to think of it, it may be better to put this on a non-master node to reduce the load of the master.
 1. cd /etc/srv/kubernetes
 2. get prometheus
+```
 export RELEASE="2.2.1"
 wget https://github.com/prometheus/prometheus/releases/download/v${RELEASE}/prometheus-${RELEASE}.linux-amd64.tar.gz
 tar xvf prometheus-${RELEASE}.linux-amd64.tar.gz
 cd prometheus-2.2.1.linux-amd64/
+```
 3. write config file
+```
 root@ip-172-31-27-32:/home/ubuntu# cat /tmp/prometheus-metric.yaml
 global:
   scrape_interval: 10s
@@ -13,8 +16,11 @@ scrape_configs:
   - job_name: prometheus-metric
     static_configs:
     - targets: ['127.0.0.1:2379','127.0.0.1:8080']
+```
 3. run prometheus
+```
 ./prometheus --config.file="/tmp/prometheus-metric.yaml" --web.listen-address=":9090" --web.enable-admin-api
+```
 
 
 PLease also ensure apiserver insecure port 8080 is enabled before start cluster: https://github.com/sonyafenge/arktos/commit/530ac5ff89f3e158177f4b7d78bc22d02c095714 
