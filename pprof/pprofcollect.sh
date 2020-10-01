@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 
-export DATETIME=${DATETIME:-}
+export CURRENTTIME=`date +"%Y-%m-%d-%T"`
 
 function collectpprof {
         local ports=$1
         local name=$2
         local pproftype=$3
-        echo "curl http://127.0.0.1:${ports}/debug/pprof/${pproftype} -o ${name}-${pproftype}-${DATETIME}.pprof"
-        curl http://127.0.0.1:${ports}/debug/pprof/${pproftype} -o ${name}-${pproftype}-${DATETIME}.pprof
+        echo "curl http://127.0.0.1:${ports}/debug/pprof/${pproftype} -o ${name}-${pproftype}-${CURRENTTIME}.pprof"
+        curl http://127.0.0.1:${ports}/debug/pprof/${pproftype} -o ${name}-${pproftype}-${CURRENTTIME}.pprof
 }
+
 
 
 
@@ -16,15 +17,14 @@ function collectpprof {
 ###############
 #   main function
 ###############
-if [[ -z "${DATETIME}" ]]; then
-        echo "Please provide DATETIME to collect data!"
-        exit 1
-fi
-mkdir ${DATETIME}
-cd ${DATETIME}
+mkdir -p /var/log/pprof
+cd /var/log/pprof
+CURRENTTIME=`date +"%Y-%m-%d-%T"`
+mkdir "${CURRENTTIME}"
+cd "${CURRENTTIME}"
 
-COMPONENTS_PORTS=${COMPONENTS_PORTS:-"8080"}
-COMPONENTS_NAME=${COMPONENTS_NAME:-"kube-apiserver"}
+COMPONENTS_PORTS="8080"
+COMPONENTS_NAME="kube-apiserver"
 echo "Collecting kube-apiserver pprof"
 collectpprof ${COMPONENTS_PORTS} ${COMPONENTS_NAME} "profile"
 collectpprof ${COMPONENTS_PORTS} ${COMPONENTS_NAME} "heap"
