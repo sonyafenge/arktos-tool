@@ -76,5 +76,5 @@ while true; do
     collectpprof ${COMPONENTS_PORTS} ${COMPONENTS_NAME} "mutex"
     collectpprof ${COMPONENTS_PORTS} ${COMPONENTS_NAME} "block"
     collectpprof ${COMPONENTS_PORTS} ${COMPONENTS_NAME} "threadcreate"
-    sleep 300
+    sleep 1800
 done
