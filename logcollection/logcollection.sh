@@ -3,7 +3,7 @@
 echo "start collecting testing logs "
 export GCE_PROJECT=${GCE_PROJECT:-"workload-controller-manager"}
 export GCE_REGION=${GCE_REGION:-"us-west2-b"}
-export RUN_PREFIX=${RUN_PREFIX:-"daily$(date +'%m%d%y')"}
+export RUN_PREFIX=${RUN_PREFIX:-"daily$(date +'%m%d%y')-1a0w1e"}
 
 
 function generate_remotelogs {
