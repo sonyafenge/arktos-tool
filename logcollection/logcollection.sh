@@ -93,8 +93,14 @@ cd ..
 ### add your own server information
 ### collect TP master logs
 #MACHINE_NAME="${RUN_PREFIX}-kubemark-tp-1-master"
-#mkdir "tp_1_master"
-#cd "tp_1_master"
+#dir="tp_1_master"
+#if [[ ! -e $dir ]]; then
+#    mkdir $dir
+#elif [[ ! -d $dir ]]; then
+#    echo "$dir already exists but is not a directory" 1>&2
+#    exit
+#fi
+#cd $dir
 #generate_remotelogs
 #copylogs
 #cd ..
