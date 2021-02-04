@@ -4,6 +4,8 @@ echo "start collecting testing logs "
 export GCE_PROJECT=${GCE_PROJECT:-"workload-controller-manager"}
 export GCE_REGION=${GCE_REGION:-"us-west2-b"}
 export RUN_PREFIX=${RUN_PREFIX:-"daily$(date +'%m%d%y')-1a0w1e"}
+export SCALEOUT_CLUSTER=${SCALEOUT_CLUSTER:-"false"}
+export SCALEOUT_TP_COUNT=${SCALEOUT_TP_COUNT:-1}
 
 
 function generate_remotelogs {
@@ -46,34 +48,25 @@ function copyminionlogs {
     gcloud beta compute scp --zone "${region}" --project "${project}" --tunnel-through-iap "${name}":/var/log/*hollow-node-z* ${location}
 }
 
-### collect kubemark master logs
-MACHINE_NAME="${RUN_PREFIX}-kubemark-master"
-dir="kubemark_master"
-if [[ ! -e $dir ]]; then
-    mkdir $dir
-elif [[ ! -d $dir ]]; then
-    echo "$dir already exists but is not a directory" 1>&2
-    exit
-fi
-cd $dir
-generate_remotelogs
-copylogs
-cd ..
+function collectlogs {
+    local dirname=${1:-${MACHINE_NAME}}
+    if [[ ! -e $dirname ]]; then
+        mkdir $dirname
+    elif [[ ! -d $dirname ]]; then
+        echo "$dirname already exists but is not a directory" 1>&2
+        exit
+    fi
+    cd $dirname
+    generate_remotelogs
+    copylogs
+    cd ..
+}
 
 
 ### collect admin master logs
 MACHINE_NAME="${RUN_PREFIX}-master"
 dir="admin_master"
-if [[ ! -e $dir ]]; then
-    mkdir $dir
-elif [[ ! -d $dir ]]; then
-    echo "$dir already exists but is not a directory" 1>&2
-    exit
-fi
-cd $dir
-generate_remotelogs
-copylogs
-cd ..
+collectlogs $dir
 
 
 ### collect minion hollow-nodes logs
@@ -90,18 +83,32 @@ generate_remotelogs
 copyminionlogs
 cd ..
 
+if [[ "${SCALEOUT_CLUSTER:-false}" == "true" ]]; then
+    ### collect RP master logs
+    MACHINE_NAME="${RUN_PREFIX}-kubemark-rp-master"
+    dir="kubemark_rp_master"
+    collectlogs $dir
+
+    ### collect RP master logs
+    MACHINE_NAME="${RUN_PREFIX}-kubemark-proxy"
+    dir="kubemark_proxy"
+    collectlogs $dir
+
+    for num in $(seq ${SCALEOUT_TP_COUNT:-1}); do
+        ### collect RP master logs
+        MACHINE_NAME="${RUN_PREFIX}-kubemark-tp-${num}-master"
+        dir="kubemark_tp_${num}_master"
+        collectlogs $dir
+    done
+else
+    ### collect kubemark master logs
+    MACHINE_NAME="${RUN_PREFIX}-kubemark-master"
+    dir="kubemark_master"
+    collectlogs $dir
+fi
 ### add your own server information
 ### collect TP master logs
 #MACHINE_NAME="${RUN_PREFIX}-kubemark-tp-1-master"
 #dir="tp_1_master"
-#if [[ ! -e $dir ]]; then
-#    mkdir $dir
-#elif [[ ! -d $dir ]]; then
-#    echo "$dir already exists but is not a directory" 1>&2
-#    exit
-#fi
-#cd $dir
-#generate_remotelogs
-#copylogs
-#cd ..
+#collectlogs $dir
 
