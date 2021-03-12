@@ -13,18 +13,18 @@ make quick-release
 ```
 
 1. kube-up to start admin cluster, start-kubemark to start kubemark cluster
-   Since Arktos PR 1001, an initial implementation of the secure GW is added(full feature will be per customer feedbacks) and secured communication channel is added in the Arktos performance teating env. Two control variables were added and the responsibilities are as follows:
+   Since Arktos PR 1001, an initial implementation of the secure GW is added(full feature will be per customer feedbacks) and secured communication channel is added in the Arktos performance testing env. Two control variables were added and the responsibilities are as follows:
    ```
    ## https://www.haproxy.com/documentation/hapee/2-2r1/deployment-guides/tls-infrastructure/
    ## currently only bridging and offloading is supported
    export HAPROXY_TLS_MODE=${HAPROXY_TLS_MODE:-"bridging"}
    
    ## controls the behavior of kubeconfig files
-   ## true means kubeconfig files generated for insecure api server connections
-   ## false is generated for secured api server connections
+   ## true means kubeconfig files generated for insecure API server connections
+   ## false is generated for secured API server connections
    export USE_INSECURE_SCALEOUT_CLUSTER_MODE="${USE_INSECURE_SCALEOUT_CLUSTER_MODE:-false}"
    ```
-  For the bridging mode where both front end and backend are using secure connection. NO changes is needed in the below perf settings.
+  For the bridging mode where both front end and backend are using secure connection. NO changes are needed in the below perf settings.
   For the offloading mode, set the HAPROXY_TLS_MODE="offloading"
 ```
 sonyali@sonyadev4:~/go/src/k8s.io/arktos$ export KUBEMARK_NUM_NODES=500 NUM_NODES=6 SCALEOUT_TP_COUNT=1 RUN_PREFIX=etcd343-0312-1x500
