@@ -19,6 +19,7 @@ sonyali@sonyadev4:~/go/src/k8s.io/arktos$ export KUBEMARK_NUM_NODES=500 NUM_NODE
 sonyali@sonyadev4:~/go/src/k8s.io/arktos$ export MASTER_DISK_SIZE=200GB MASTER_ROOT_DISK_SIZE=200GB KUBE_GCE_ZONE=us-central1-b MASTER_SIZE=n1-highmem-32 NODE_SIZE=n1-highmem-16 NODE_DISK_SIZE=200GB GOPATH=$HOME/go KUBE_GCE_ENABLE_IP_ALIASES=true KUBE_GCE_PRIVATE_CLUSTER=true CREATE_CUSTOM_NETWORK=true KUBE_GCE_INSTANCE_PREFIX=${RUN_PREFIX} KUBE_GCE_NETWORK=${RUN_PREFIX} ENABLE_KCM_LEADER_ELECT=false ENABLE_SCHEDULER_LEADER_ELECT=false ETCD_QUOTA_BACKEND_BYTES=8589934592 SHARE_PARTITIONSERVER=false LOGROTATE_FILES_MAX_COUNT=50 LOGROTATE_MAX_SIZE=200M KUBE_ENABLE_APISERVER_INSECURE_PORT=true KUBE_ENABLE_PROMETHEUS_DEBUG=true KUBE_ENABLE_PPROF_DEBUG=true TEST_CLUSTER_LOG_LEVEL=--v=2 HOLLOW_KUBELET_TEST_LOG_LEVEL=--v=2 SCALEOUT_CLUSTER=true
 
 sonyali@sonyadev4:~/go/src/k8s.io/arktos$ ./cluster/kube-up.sh 
+
 sonyali@sonyadev4:~/go/src/k8s.io/arktos$ ./test/kubemark/start-kubemark.sh
 ```
 
@@ -69,6 +70,7 @@ if SCALEOUT_TP_COUNT>1, then follow the steps above to create new tenant, for ex
 4. start perf-tests
 ```
 sonyali@sonyadev4:~/go/src/k8s.io/arktos$ SCALEOUT_TEST_TENANT=arktos RUN_NAME=etcd343-0312-1x500 TENANT_PERF_LOG_DIR=/home/sonyali/logs/perf-test/gce-500/arktos/${RUN_NAME}/${SCALEOUT_TEST_TENANT}
+
 sonyali@sonyadev4:~/go/src/k8s.io/arktos$ echo $TENANT_PERF_LOG_DIR 
 /home/sonyali/logs/perf-test/gce-500/arktos/etcd343-0312-1x500/arktos
 
@@ -94,5 +96,6 @@ sonyali@sonyadev4:~/logs/perf-test/gce-500/arktos/etcd343-0312-1x500$ bash ~/ark
 6. after all run finished, shutdown cluster
 ```
 sonyali@sonyadev4:~/go/src/k8s.io/arktos$ ./test/kubemark/stop-kubemark.sh 
+
 sonyali@sonyadev4:~/go/src/k8s.io/arktos$ ./cluster/kube-down.sh
 ```
