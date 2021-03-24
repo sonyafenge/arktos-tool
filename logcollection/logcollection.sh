@@ -6,6 +6,7 @@ export GCE_REGION=${GCE_REGION:-"us-west2-b"}
 export RUN_PREFIX=${RUN_PREFIX:-"daily$(date +'%m%d%y')-1a0w1e"}
 export SCALEOUT_CLUSTER=${SCALEOUT_CLUSTER:-"false"}
 export SCALEOUT_TP_COUNT=${SCALEOUT_TP_COUNT:-1}
+export SCALEOUT_RP_COUNT=${SCALEOUT_RP_COUNT:-1}
 
 
 function generate_remotelogs {
@@ -84,10 +85,12 @@ copyminionlogs
 cd ..
 
 if [[ "${SCALEOUT_CLUSTER:-false}" == "true" ]]; then
-    ### collect RP master logs
-    MACHINE_NAME="${RUN_PREFIX}-kubemark-rp-master"
-    dir="kubemark_rp_master"
-    collectlogs $dir
+    for num in $(seq ${SCALEOUT_RP_COUNT:-1}); do
+        ### collect RP master logs
+        MACHINE_NAME="${RUN_PREFIX}-kubemark-rp-${num}-master"
+        dir="kubemark_rp_${num}_master"
+        collectlogs $dir
+    done
 
     ### collect RP master logs
     MACHINE_NAME="${RUN_PREFIX}-kubemark-proxy"
@@ -95,7 +98,7 @@ if [[ "${SCALEOUT_CLUSTER:-false}" == "true" ]]; then
     collectlogs $dir
 
     for num in $(seq ${SCALEOUT_TP_COUNT:-1}); do
-        ### collect RP master logs
+        ### collect TP master logs
         MACHINE_NAME="${RUN_PREFIX}-kubemark-tp-${num}-master"
         dir="kubemark_tp_${num}_master"
         collectlogs $dir
