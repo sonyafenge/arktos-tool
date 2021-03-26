@@ -25,7 +25,7 @@ sonyali@sonyadev4:~/go/src/k8s.io/arktos$ ./test/kubemark/start-kubemark.sh
 ```
 If you have multi TP or multi RP server, KUBEMARK_NUM_NODES is the hollow-node number for each RP; NUM_NODES is the admin cluster physical VM number, should be OK to host your total hollow-node number.
 ```
-export KUBEMARK_NUM_NODES=500 NUM_NODES=12 SCALEOUT_TP_COUNT=2 export SCALEOUT_RP_COUNT=2 RUN_PREFIX=etcd343-0312-1x500
+export KUBEMARK_NUM_NODES=500 NUM_NODES=12 SCALEOUT_TP_COUNT=2 SCALEOUT_RP_COUNT=2 RUN_PREFIX=etcd343-0312-1x500
 ```
 
    Since Arktos PR 1001, an initial implementation of the secure GW is added(full feature will be per customer feedbacks) and secured communication channel is added in the Arktos performance testing env. Two control variables were added and the responsibilities are as follows:
