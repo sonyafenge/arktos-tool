@@ -1,6 +1,6 @@
 How to use example:
 ```
-export GCE_PROJECT=workload-controller-manager GCE_REGION=us-west2-b RUN_PREFIX=daily010621-1a0w1e SCALEOUT_CLUSTER=true SCALEOUT_TP_COUNT=1
+export GCE_PROJECT=workload-controller-manager GCE_REGION=us-west2-b RUN_PREFIX=daily010621-1a0w1e SCALEOUT_CLUSTER=true SCALEOUT_TP_COUNT=1 SCALEOUT_TP_COUNT=1
 bash logcollection.sh
 ```
 
