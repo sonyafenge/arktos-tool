@@ -85,12 +85,18 @@ copyminionlogs
 cd ..
 
 if [[ "${SCALEOUT_CLUSTER:-false}" == "true" ]]; then
-    for num in $(seq ${SCALEOUT_RP_COUNT:-1}); do
-        ### collect RP master logs
-        MACHINE_NAME="${RUN_PREFIX}-kubemark-rp-${num}-master"
-        dir="kubemark_rp_${num}_master"
+    if [[ $SCALEOUT_RP_COUNT == 1 ]]; then
+        MACHINE_NAME="${RUN_PREFIX}-kubemark-rp-master"
+        dir="kubemark_rp_master"
         collectlogs $dir
-    done
+    else
+        for num in $(seq ${SCALEOUT_RP_COUNT:-1}); do
+            ### collect RP master logs
+            MACHINE_NAME="${RUN_PREFIX}-kubemark-rp-${num}-master"
+            dir="kubemark_rp_${num}_master"
+            collectlogs $dir
+        done
+    fi
 
     ### collect RP master logs
     MACHINE_NAME="${RUN_PREFIX}-kubemark-proxy"
