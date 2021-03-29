@@ -95,7 +95,7 @@ sonyali@sonyadev4:~/go/src/k8s.io/arktos$ echo $TENANT_PERF_LOG_DIR
 
 sonyali@sonyadev4:~/go/src/k8s.io/arktos$ mkdir -p /home/sonyali/logs/perf-test/gce-500/arktos/etcd343-0312-1x500/arktos
 
-sonyali@sonyadev4:~/go/src/k8s.io/arktos$ SCALEOUT_TEST_TENANT=arktos RUN_NAME=etcd343-0312-1x500 TENANT_PERF_LOG_DIR=/home/sonyali/logs/perf-test/gce-500/arktos/${RUN_NAME}/${SCALEOUT_TEST_TENANT} perf-tests/clusterloader2/run-e2e.sh --nodes=500 --provider=kubemark --kubeconfig=/home/sonyali/go/src/k8s.io/arktos/test/kubemark/resources/kubeconfig.kubemark-proxy --report-dir=${TENANT_PERF_LOG_DIR} --testconfig=testing/density/config.yaml --testconfig=testing/load/config.yaml --testoverrides=./testing/experiments/disable_pvs.yaml > ${TENANT_PERF_LOG_DIR}/perf-run.log  2>&1  &
+sonyali@sonyadev4:~/go/src/k8s.io/arktos$ SCALEOUT_TEST_TENANT=arktos RUN_NAME=etcd343-0312-1x500 TENANT_PERF_LOG_DIR=/home/sonyali/logs/perf-test/gce-500/arktos/${RUN_NAME}/${SCALEOUT_TEST_TENANT} nohup perf-tests/clusterloader2/run-e2e.sh --nodes=500 --provider=kubemark --kubeconfig=/home/sonyali/go/src/k8s.io/arktos/test/kubemark/resources/kubeconfig.kubemark-proxy --report-dir=${TENANT_PERF_LOG_DIR} --testconfig=testing/density/config.yaml --testconfig=testing/load/config.yaml --testoverrides=./testing/experiments/disable_pvs.yaml > ${TENANT_PERF_LOG_DIR}/perf-run.log  2>&1  &
 ```
 
 if SCALEOUT_TP_COUNT>1, then open a new commandline windows, follow the steps above to start perf-test instance for each TP.  Please remember to update SCALEOUT_TEST_TENANT to your TP tenant name.  "--nodes" should be the number that assigned to this TP. For example: if you have totally 1000 hollow-nodes, 2 tp server, then "--nodes" should be 1000/2=500
