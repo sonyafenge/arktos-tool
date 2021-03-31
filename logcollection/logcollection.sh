@@ -43,10 +43,17 @@ function copyminionlogs {
     local name=${3:-${MACHINE_NAME}}
     local location=${4:-"./"}
     echo "copying hollow-node logs from remote machine:$name to $location"
-    gcloud beta compute scp --zone "${region}" --project "${project}" --tunnel-through-iap "${name}":dmesg.log ${location}
-    gcloud beta compute scp --zone "${region}" --project "${project}" --tunnel-through-iap "${name}":kubelet.log ${location}
-    gcloud beta compute scp --zone "${region}" --project "${project}" --tunnel-through-iap "${name}":journalctl.log ${location}
-    gcloud beta compute scp --zone "${region}" --project "${project}" --tunnel-through-iap "${name}":/var/log/*hollow-node-z* ${location}
+    gcloud beta compute scp --zone "${region}" --project "${project}" "${name}":dmesg.log ${location}
+    gcloud beta compute scp --zone "${region}" --project "${project}" "${name}":kubelet.log ${location}
+    gcloud beta compute scp --zone "${region}" --project "${project}" "${name}":journalctl.log ${location}
+
+    if [[ $SCALEOUT_RP_COUNT == 1 ]]; then
+        gcloud beta compute scp --zone "${region}" --project "${project}" "${name}":/var/log/*hollow-node-z* ${location}
+    else
+        for num in $(seq ${SCALEOUT_RP_COUNT:-1}); do
+            gcloud beta compute scp --zone "${region}" --project "${project}" "${name}":/var/log/*hollow-node-${num}-z* ${location}
+        done
+    fi
 }
 
 function collectlogs {
