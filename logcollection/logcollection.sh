@@ -47,13 +47,13 @@ function copyminionlogs {
     gcloud beta compute scp --zone "${region}" --project "${project}" "${name}":kubelet.log ${location}
     gcloud beta compute scp --zone "${region}" --project "${project}" "${name}":journalctl.log ${location}
 
-    if [[ $SCALEOUT_RP_COUNT == 1 ]]; then
-        gcloud beta compute scp --zone "${region}" --project "${project}" "${name}":/var/log/*hollow-node-z* ${location}
-    else
-        for num in $(seq ${SCALEOUT_RP_COUNT:-1}); do
-            gcloud beta compute scp --zone "${region}" --project "${project}" "${name}":/var/log/*hollow-node-${num}-z* ${location}
-        done
-    fi
+    #if [[ $SCALEOUT_RP_COUNT == 1 ]]; then
+    #    gcloud beta compute scp --zone "${region}" --project "${project}" "${name}":/var/log/*hollow-node-z* ${location}
+    #else
+    for num in $(seq ${SCALEOUT_RP_COUNT:-1}); do
+        gcloud beta compute scp --zone "${region}" --project "${project}" "${name}":/var/log/*hollow-node-${num}-z* ${location}
+    done
+    #fi
 }
 
 function collectlogs {
@@ -92,20 +92,20 @@ copyminionlogs
 cd ..
 
 if [[ "${SCALEOUT_CLUSTER:-false}" == "true" ]]; then
-    if [[ $SCALEOUT_RP_COUNT == 1 ]]; then
-        MACHINE_NAME="${RUN_PREFIX}-kubemark-rp-master"
-        dir="kubemark_rp_master"
+    #if [[ $SCALEOUT_RP_COUNT == 1 ]]; then
+     #   MACHINE_NAME="${RUN_PREFIX}-kubemark-rp-master"
+     #   dir="kubemark_rp_master"
+     #   collectlogs $dir
+    #else
+    for num in $(seq ${SCALEOUT_RP_COUNT:-1}); do
+        ### collect RP master logs
+        MACHINE_NAME="${RUN_PREFIX}-kubemark-rp-${num}-master"
+        dir="kubemark_rp_${num}_master"
         collectlogs $dir
-    else
-        for num in $(seq ${SCALEOUT_RP_COUNT:-1}); do
-            ### collect RP master logs
-            MACHINE_NAME="${RUN_PREFIX}-kubemark-rp-${num}-master"
-            dir="kubemark_rp_${num}_master"
-            collectlogs $dir
-        done
-    fi
+    done
+    #fi
 
-    ### collect RP master logs
+    ### collect proxy logs
     MACHINE_NAME="${RUN_PREFIX}-kubemark-proxy"
     dir="kubemark_proxy"
     collectlogs $dir
