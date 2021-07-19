@@ -44,7 +44,7 @@ export KUBEMARK_NUM_NODES=500 NUM_NODES=12 SCALEOUT_TP_COUNT=2 SCALEOUT_RP_COUNT
   
 2. Check clusters are ready
 ```
-sonyali@sonyadev4:~/go/src/k8s.io/arktos$ kubectl --kubeconfig=/home/sonyali/go/src/k8s.io/arktos/test/kubemark/resources/kubeconfig.kubemark-rp get nodes | wc -l
+sonyali@sonyadev4:~/go/src/k8s.io/arktos$ kubectl --kubeconfig=/home/sonyali/go/src/k8s.io/arktos/test/kubemark/resources/kubeconfig.kubemark.rp-1 get nodes | wc -l
 502
 
 sonyali@sonyadev4:~/go/src/k8s.io/arktos$ ls ./test/kubemark/resources
@@ -55,17 +55,17 @@ haproxy.cfg.tmp                   hollow-node_template.yaml           kubeconfig
 
 3. Create Tenants and run sanity test if necessary
 ```
-sonyali@sonyadev4:~/go/src/k8s.io/arktos$ ./_output/dockerized/bin/linux/amd64/kubectl --kubeconfig=./test/kubemark/resources/kubeconfig.kubemark-tp-1 create tenant arktos
+sonyali@sonyadev4:~/go/src/k8s.io/arktos$ ./_output/dockerized/bin/linux/amd64/kubectl --kubeconfig=./test/kubemark/resources/kubeconfig.kubemark.tp-1 create tenant arktos
 setting storage cluster to 0
 tenant/arktos created
 ```
 Sanity test is to verify cluster basic function. these are optional for perf-test:
 ```
-sonyali@sonyadev4:~/go/src/k8s.io/arktos$ ./_output/dockerized/bin/linux/amd64/kubectl --kubeconfig=./test/kubemark/resources/kubeconfig.kubemark-tp-1 get pods -AT
+sonyali@sonyadev4:~/go/src/k8s.io/arktos$ ./_output/dockerized/bin/linux/amd64/kubectl --kubeconfig=./test/kubemark/resources/kubeconfig.kubemark.tp-1 get pods -AT
 
 sonyali@sonyadev4:~/go/src/k8s.io/arktos$ ./_output/dockerized/bin/linux/amd64/kubectl --kubeconfig=./test/kubemark/resources/kubeconfig.kubemark-proxy get pods -AT
 
-sonyali@sonyadev4:~/go/src/k8s.io/arktos$ ./_output/dockerized/bin/linux/amd64/kubectl --kubeconfig=./test/kubemark/resources/kubeconfig.kubemark-tp-1 create tenant aaaaa
+sonyali@sonyadev4:~/go/src/k8s.io/arktos$ ./_output/dockerized/bin/linux/amd64/kubectl --kubeconfig=./test/kubemark/resources/kubeconfig.kubemark.tp-1 create tenant aaaaa
 
 sonyali@sonyadev4:~/go/src/k8s.io/arktos$ ./_output/dockerized/bin/linux/amd64/kubectl --kubeconfig=./test/kubemark/resources/kubeconfig.kubemark-proxy run sanitytest --image=nginx --tenant aaaaa
 
@@ -81,7 +81,7 @@ sonyali@sonyadev4:~/go/src/k8s.io/arktos$ ./_output/dockerized/bin/linux/amd64/k
 
 sonyali@sonyadev4:~/go/src/k8s.io/arktos$ ./_output/dockerized/bin/linux/amd64/kubectl --kubeconfig=./test/kubemark/resources/kubeconfig.kubemark-proxy get pods --all-namespaces --tenant aaaaa
 
-sonyali@sonyadev4:~/go/src/k8s.io/arktos$ ./_output/dockerized/bin/linux/amd64/kubectl --kubeconfig=./test/kubemark/resources/kubeconfig.kubemark-tp-1 delete tenant aaaaa
+sonyali@sonyadev4:~/go/src/k8s.io/arktos$ ./_output/dockerized/bin/linux/amd64/kubectl --kubeconfig=./test/kubemark/resources/kubeconfig.kubemark.tp-1 delete tenant aaaaa
 ```
 
 if SCALEOUT_TP_COUNT>1, then follow the steps above to create new tenant, for example: zeta
