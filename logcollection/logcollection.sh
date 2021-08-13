@@ -106,7 +106,7 @@ if [[ "${SCALEOUT_CLUSTER:-false}" == "true" ]]; then
     #fi
 
     ### collect proxy logs
-    MACHINE_NAME="${RUN_PREFIX}-kubemark-proxy"
+    MACHINE_NAME="${RUN_PREFIX}-proxy"
     dir="kubemark_proxy"
     collectlogs $dir
 
