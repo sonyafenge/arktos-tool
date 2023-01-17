@@ -10,7 +10,7 @@ HOST_NAME=${HOST_NMAE:-MASTER}
 #   main function
 ###############
 
-echo "Installing Docker"
+echo "### Installing Docker"
 sudo apt update
 sudo apt install -y docker.io
 docker --version
@@ -18,12 +18,12 @@ sudo systemctl enable docker
 sudo systemctl start docker
 
 sudo usermod -aG docker $USER
-newgrp docker
+newgrp docker &
 
 
 
 
-echo "Installing Kubernetes components"
+echo "### Installing Kubernetes components"
 sudo apt update
 sudo apt install -y apt-transport-https gnupg2 curl
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
@@ -38,11 +38,13 @@ sudo apt update
 sudo apt install -y kubeadm kubectl kubernetes-cni kubelet=1.25.5-00 
 
 
-echo "Configuring machine to meet kubernetes requirements"
+echo "### Configuring machine to meet kubernetes requirements"
 
 sudo hostnamectl set-hostname ${HOST_NAME}
 
 sudo swapoff -a
+sudo ufw allow 6443
+sudo ufw allow 6443/tcp
 
 sudo modprobe br_netfilter
 sudo sysctl net.bridge.bridge-nf-call-iptables=1
@@ -57,9 +59,9 @@ cat <<EOF | sudo tee /etc/docker/daemon.json
 }
 EOF
 
-echo "Done to install/config Kubernetes"
-echo "Please run kubeadm to init master or join nodes to existing cluster"
-echo "    $ sudo kubeadm init --pod-network-cidr=10.244.0.0/16"
+echo "### Done to install/config Kubernetes"
+echo "### Please run kubeadm to init master or join nodes to existing cluster"
+echo "    $ sudo kubeadm init --config [CONFIG-YAML]"
 echo "    $ sudo kubeadm join [MASTER_IP]:6443 --token [TOKEN] --discovery-token-ca-cert-hash [CERT-HASH]] "
-echo "After kubeadm init successfully on master, Please install pod network"
+echo "### After kubeadm init successfully on master, Please install pod network"
 echo "    $ kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/v0.20.2/Documentation/kube-flannel.yml"
