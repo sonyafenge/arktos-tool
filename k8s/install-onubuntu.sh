@@ -20,7 +20,6 @@ sudo systemctl start docker
 sudo usermod -aG docker $USER
 newgrp docker
 
-sudo systemctl status docker
 
 
 
@@ -41,6 +40,8 @@ sudo apt install -y kubeadm kubectl kubernetes-cni kubelet=1.25.5-00
 
 echo "Configuring machine to meet kubernetes requirements"
 
+sudo hostnamectl set-hostname ${HOST_NAME}
+
 sudo swapoff -a
 
 sudo modprobe br_netfilter
@@ -55,3 +56,10 @@ cat <<EOF | sudo tee /etc/docker/daemon.json
 "storage-driver": "overlay2"
 }
 EOF
+
+echo "Done to install/config Kubernetes"
+echo "Please run kubeadm to init master or join nodes to existing cluster"
+echo "    $ sudo kubeadm init --pod-network-cidr=10.244.0.0/16"
+echo "    $ sudo kubeadm join [MASTER_IP]:6443 --token [TOKEN] --discovery-token-ca-cert-hash [CERT-HASH]] "
+echo "After kubeadm init successfully on master, Please install pod network"
+echo "    $ kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/v0.20.2/Documentation/kube-flannel.yml"
