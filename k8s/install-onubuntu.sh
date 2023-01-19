@@ -3,29 +3,18 @@
 #####install kubernetes on ubuntu 20.04
 ### Only support ubuntu 
 
-HOST_NAME=${HOST_NMAE:-MASTER}
+HOST_NAME=${HOST_NMAE:-master}
 
 
 ###############
 #   main function
 ###############
 
-echo "### Installing Docker"
-sudo apt update
-sudo apt install -y docker.io
-docker --version
-sudo systemctl enable docker
-sudo systemctl start docker
-
-sudo usermod -aG docker $USER
-newgrp docker &
-
-
 
 
 echo "### Installing Kubernetes components"
 sudo apt update
-sudo apt install -y apt-transport-https gnupg2 curl
+sudo apt install -y apt-transport-https gnupg2 curl ca-certificates lsb-release
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
 
 
@@ -35,7 +24,27 @@ sudo mv ~/kubernetes.list /etc/apt/sources.list.d
 
 sudo apt update
 
-sudo apt install -y kubeadm kubectl kubernetes-cni kubelet=1.25.5-00 
+sudo apt install -y kubeadm=1.25.5-00 kubectl=1.25.5-00 kubernetes-cni kubelet=1.25.5-00 
+
+
+echo "### Installing Docker"
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt update
+sudo apt install -y docker.io containerd.io
+docker --version
+sudo systemctl enable docker
+sudo systemctl enable containerd
+sudo systemctl start docker
+sudo systemctl start containerd
+
+sudo chmod o+rw /var/run/docker.sock
+#sudo usermod -aG docker $USER
+#newgrp docker &
 
 
 echo "### Configuring machine to meet kubernetes requirements"
@@ -58,6 +67,12 @@ cat <<EOF | sudo tee /etc/docker/daemon.json
 "storage-driver": "overlay2"
 }
 EOF
+
+sudo systemctl enable docker
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+sudo systemctl restart containerd
+sudo systemctl restart kubelet
 
 echo "### Done to install/config Kubernetes"
 echo "### Please run kubeadm to init master or join nodes to existing cluster"
