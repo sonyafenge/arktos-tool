@@ -35,12 +35,10 @@ echo \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 sudo apt update
+sudo apt remove containerd docker 
 sudo apt install -y docker.io containerd.io
 docker --version
-sudo systemctl enable docker
-sudo systemctl enable containerd
-sudo systemctl start docker
-sudo systemctl start containerd
+
 
 sudo chmod o+rw /var/run/docker.sock
 #sudo usermod -aG docker $USER
@@ -68,7 +66,9 @@ cat <<EOF | sudo tee /etc/docker/daemon.json
 }
 EOF
 
+sudo rm /etc/containerd/config.toml
 sudo systemctl enable docker
+sudo systemctl enable containerd
 sudo systemctl daemon-reload
 sudo systemctl restart docker
 sudo systemctl restart containerd
