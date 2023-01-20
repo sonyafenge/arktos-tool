@@ -57,6 +57,7 @@ sudo ufw allow 6443/tcp
 
 sudo modprobe br_netfilter
 sudo sysctl net.bridge.bridge-nf-call-iptables=1
+sudo sysctl net.ipv4.ip_forward=1
 
 sudo mkdir /etc/docker
 cat <<EOF | sudo tee /etc/docker/daemon.json
