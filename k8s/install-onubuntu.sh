@@ -3,7 +3,7 @@
 #####install kubernetes on ubuntu 20.04
 ### Only support ubuntu 
 
-HOST_NAME=${HOST_NMAE:-master}
+HOST_NAME=${HOST_NAME:-master}
 
 
 ###############
@@ -11,7 +11,7 @@ HOST_NAME=${HOST_NMAE:-master}
 ###############
 
 
-
+echo “HOST_NAME:$HOST_NAME”
 echo "### Installing Kubernetes components"
 sudo apt update
 sudo apt install -y apt-transport-https gnupg2 curl ca-certificates lsb-release
